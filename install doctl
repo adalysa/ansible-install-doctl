@@ -1,0 +1,19 @@
+- name: Playbook
+  hosts: all
+  become: yes
+  tasks:
+    - name: install snapd
+      dnf:
+        state: present
+        name:
+          - epel-release
+          - snapd
+    - name: enable snap communication
+      shell: sudo systemctl enable --now snapd.socket
+    - name: enable snap support
+      shell: sudo ln -s /var/lib/snapd/snap /snap
+    - name: install doctl
+      snap:
+        state: present
+        name:
+          - doctl
